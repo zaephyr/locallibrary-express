@@ -19,7 +19,7 @@ var app = express();
 
 app.use(helmet());
 
-var mongoDB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
+var mongoDB = process.env.MONGODB_URI || process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //Get the default connection
