@@ -19,6 +19,7 @@
     "express": "~4.16.1",
     "express-validator": "^6.6.1",
     "hamlet": "^0.3.3",
+    "helmet": "^4.1.1",
     "http-errors": "~1.6.3",
     "moment": "^2.29.1",
     "mongoose": "^5.10.9",
