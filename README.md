@@ -1,2 +1,3 @@
 # locallibrary-express
-Simple local library app using Node.js with Express.js and MongoDB
+Simple local library app using Express.js (Node.js) and MongoDB deployed to heroku.
+https://obscure-inlet-31508.herokuapp.com/
