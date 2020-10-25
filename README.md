@@ -1,8 +1,10 @@
 # Local Library App
 
-> ## From The Odin Project's curriculum
+> Simple CRUD type app
+> username, password: admin, admin123
+> From The Odin Project's curriculum
 ### The password is intended to be in the HTML
-> - [Live Demo](https://obscure-inlet-31508.herokuapp.com/) :shipit:
+> - [Live Demo](https://obscure-inlet-31508.herokuapp.com/)
 
 ## Getting Started
 
@@ -10,7 +12,7 @@
 
 ```bash
 git clone https://github.com/zaephyr/locallibrary-express.git
-cd inventory-application
+cd locallibrary-express
 npm install
 npm run serverstart
 ```
