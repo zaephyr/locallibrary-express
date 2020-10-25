@@ -9,7 +9,7 @@
 ### Installing and running
 
 ```bash
-git clone https://github.com/igorashs/inventory-application.git
+git clone https://github.com/zaephyr/locallibrary-express.git
 cd inventory-application
 npm install
 npm run serverstart
