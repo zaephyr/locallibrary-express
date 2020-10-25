@@ -6,7 +6,6 @@ Simple CRUD type app
 username, password: admin, admin123
 
 > From The Odin Project's curriculum
-### The password is intended to be in the HTML
 > - [Live Demo](https://obscure-inlet-31508.herokuapp.com/)
 
 ## Getting Started
