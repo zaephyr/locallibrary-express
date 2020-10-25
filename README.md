@@ -29,6 +29,6 @@ touch .env
 * [pug](https://pugjs.org/api/getting-started.html) (view engine)
 * and more...
 
-## License
+
 
 
