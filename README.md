@@ -25,7 +25,3 @@ npm run serverstart
 * [multer](https://github.com/expressjs/multer) (for uploading files)
 * [pug](https://pugjs.org/api/getting-started.html) (view engine)
 * and more...
-
-
-
-
