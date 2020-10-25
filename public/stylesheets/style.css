@@ -12,3 +12,12 @@ a {
     padding: 0;
     list-style: none;
 }
+
+.author_image {
+    width: 200px;
+}
+
+.login {
+    display: flex;
+    justify-content: flex-end;
+}

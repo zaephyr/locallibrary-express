@@ -2,6 +2,19 @@ var Author = require('../models/author');
 var async = require('async');
 var Book = require('../models/book');
 const { body, validationResult } = require('express-validator');
+const path = require('path');
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: './public/images',
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    },
+});
+
+const upload = multer({
+    storage,
+    limits: { fileSize: 10000000 },
+}).single('image');
 
 // Display list of all Authors.
 exports.author_list = function (req, res, next) {
@@ -55,6 +68,7 @@ exports.author_create_get = function (req, res, next) {
 
 // Handle Author create on POST.
 exports.author_create_post = [
+    upload,
     // Validate and sanitise fields.
     body('first_name')
         .trim()
@@ -77,20 +91,21 @@ exports.author_create_post = [
     (req, res, next) => {
         // Extract the validation errors from a request.
         const errors = validationResult(req);
-
+        console.log(req);
         if (!errors.isEmpty()) {
             // There are errors. Render form again with sanitized values/errors messages.
             res.render('author_form', { title: 'Create Author', author: req.body, errors: errors.array() });
             return;
         } else {
             // Data from form is valid.
-
+            const imgurl = req.file ? `/images/${req.file.filename}` : '';
             // Create an Author object with escaped and trimmed data.
             var author = new Author({
                 first_name: req.body.first_name,
                 family_name: req.body.family_name,
                 date_of_birth: req.body.date_of_birth,
                 date_of_death: req.body.date_of_death,
+                image_url: imgurl,
             });
             author.save(function (err) {
                 if (err) {
@@ -176,10 +191,7 @@ exports.author_update_get = function (req, res, next) {
     async.parallel(
         {
             author: function (callback) {
-                Author.findById(req.params.id).populate('book').exec(callback);
-            },
-            books: function (callback) {
-                Book.find(callback);
+                Author.findById(req.params.id).exec(callback);
             },
         },
         function (err, results) {
@@ -193,10 +205,8 @@ exports.author_update_get = function (req, res, next) {
                 return next(err);
             }
             // Success.
-
             res.render('author_form', {
                 title: 'Update Author',
-                books: results.books,
                 author: results.author,
             });
         }
@@ -205,7 +215,7 @@ exports.author_update_get = function (req, res, next) {
 
 // Handle Author update on POST.
 exports.author_update_post = [
-    // Convert the genre to an array
+    upload,
 
     // Validate and sanitise fields.
     body('first_name')
@@ -229,6 +239,10 @@ exports.author_update_post = [
     (req, res, next) => {
         // Extract the validation errors from a request.
         const errors = validationResult(req);
+        console.log(req);
+        const imgurl = req.file
+            ? `/images/${req.file.filename}`
+            : 'https://via.placeholder.com/300x200.jpg/f1f5f4/516f4e/?text=Product+Doesn%27t+Have+An+Image+Yet';
 
         // Create a Author object with escaped/trimmed data and old id.
         var author = new Author({
@@ -236,30 +250,16 @@ exports.author_update_post = [
             family_name: req.body.family_name,
             date_of_birth: req.body.date_of_birth,
             date_of_death: req.body.date_of_death,
+            image_url: imgurl,
+            _id: req.params.id,
         });
 
         if (!errors.isEmpty()) {
-            // There are errors. Render form again with sanitized values/error messages.
+            res.render('author_form', {
+                title: 'Update Author',
+                author,
+            });
 
-            // Get all books  for form.
-            async.parallel(
-                {
-                    books: function (callback) {
-                        Book.find(callback);
-                    },
-                },
-                function (err, results) {
-                    if (err) {
-                        return next(err);
-                    }
-
-                    res.render('author_form', {
-                        title: 'Update Author',
-                        books: results.books,
-                        author: results.author,
-                    });
-                }
-            );
             return;
         } else {
             // Data from form is valid. Update the record.
